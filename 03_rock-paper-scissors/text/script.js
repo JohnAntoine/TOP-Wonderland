@@ -1,5 +1,5 @@
 function computerPlay() {
-  let choice = Math.floor((Math.random() * 3) + 1);
+  let choice = Math.floor(Math.random() * 3 + 1);
   switch (choice) {
     case 1:
       return "Rock";
@@ -9,7 +9,6 @@ function computerPlay() {
       return "Scissors";
   }
 }
-
 
 function playRound(playerSelection, computerSelection) {
   let playerWin = false;
@@ -36,23 +35,26 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function capitalize(word) {
-  return word.replace(/^[a-z]/, c => c.toUpperCase());
+  return word.replace(/^[a-z]/, (c) => c.toUpperCase());
 }
-
 
 function game() {
   let round = 0;
   let playerScore = 0;
 
-  while (round < 5) {
+  while (1) {
     const computerSelection = computerPlay();
-    let playerSelection = prompt('Choose Your Weapon! Rock | Paper | Scissors');
+    let playerSelection = prompt("Choose Your Weapon! Rock | Paper | Scissors");
     let playerWin = false;
 
-    while (playerSelection.toLowerCase() !== 'rock' &&
-      playerSelection.toLowerCase() !== 'paper' &&
-      playerSelection.toLowerCase() !== 'scissors') {
-      playerSelection = prompt('Invalid Choice!\nChoose Your Weapon! Rock | Paper | Scissors');
+    while (
+      playerSelection.toLowerCase() !== "rock" &&
+      playerSelection.toLowerCase() !== "paper" &&
+      playerSelection.toLowerCase() !== "scissors"
+    ) {
+      playerSelection = prompt(
+        "Invalid Choice!\nChoose Your Weapon! Rock | Paper | Scissors"
+      );
     }
 
     playerSelection = capitalize(playerSelection.toLowerCase());
@@ -74,13 +76,15 @@ function game() {
     round++;
   }
 
-    if (playerScore > 2) {
-        console.log(`You Win The Game!!\nYou Won ${playerScore} rounds out of 5!`)
-        alert(`You Win The Game!!\nYou Won ${playerScore} rounds out of 5!`)
-    } else {
-        console.log(`You Lose The Game!!\nYou Lost ${5 - playerScore} rounds out of 5!`)
-        alert(`You Lose The Game!!\nYou Lost ${5 - playerScore} rounds out of 5!`)
-    }
+  if (playerScore > 2) {
+    console.log(`You Win The Game!!\nYou Won ${playerScore} rounds out of 5!`);
+    alert(`You Win The Game!!\nYou Won ${playerScore} rounds out of 5!`);
+  } else {
+    console.log(
+      `You Lose The Game!!\nYou Lost ${5 - playerScore} rounds out of 5!`
+    );
+    alert(`You Lose The Game!!\nYou Lost ${5 - playerScore} rounds out of 5!`);
+  }
 }
 
 game();
