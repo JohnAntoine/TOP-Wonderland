@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content=
-                    "width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/png" sizes="32x32" href=
-                   "./images/favicon-32x32.png">
-        <link rel="stylesheet" href="./style.css" type="text/css"
-              media="screen">
-        <title>Rock, Paper, Scissors</title>
-    </head>
-    <body>
-        <header>
-            <img src="./images/logo.svg" alt="logo">
-            <div class="score-wrapper">
-                <div class="score-text">SCORE</div>
-                <div class="score-points">12</div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=
+    "width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href=
+    "./images/favicon-32x32.png">
+    <link rel="stylesheet" href="./style.css" type="text/css"
+    media="screen">
+    <title>Rock, Paper, Scissors</title>
+</head>
+<body>
+    <header>
+        <img src="./images/logo.svg" alt="logo">
+        <div class="score-wrapper">
+            <div class="score-text">
+                SCORE
             </div>
-        </header>
-        <div class="content">
-            <div class="game-container">
-
-                <div class="choice-wrapper choice-1 hidden" data-choice="paper">
-                    <div class="choice-bg">
-                        <img class="bg-top" src="./images/ring-paper.svg" alt="paper-bg">
-                        <img class="bg-shadow" src="./images/ring-paper.svg" alt="paper-bg">
-                    </div>
-                    <div class="choice">
-                        <img src="./images/icon-paper.svg" alt="paper-icon">
-                    </div>
-                </div>
-
-                <div class="choice-wrapper choice-2 hidden" data-choice="rock">
-                    <div class="choice-bg">
-                        <img class="bg-top" src="./images/ring-rock.svg" alt="scissors-bg">
-                        <img class="bg-shadow" src="./images/ring-rock.svg" alt="rock-bg">
-                    </div>
-                    <div class="choice">
-                        <img src="./images/icon-rock.svg" alt="scissors-icon">
-                    </div>
-                </div>
-
-                <div class="choice-wrapper choice-3 hidden" data-choice="scissors">
-                    <div class="choice-bg">
-                        <img class="bg-top" src="./images/ring-scissors.svg" alt="rock-bg">
-                        <img class="bg-shadow" src="./images/ring-scissors.svg" alt="scissors-bg">
-                    </div>
-                    <div class="choice">
-                        <img src="./images/icon-scissors.svg" alt="rock-icon">
-                    </div>
-                </div>
-
-                <img class="game-selection-bg hidden" src="./images/bg-triangle.svg" alt="triangle-background">
+            <div class="score-points"></div>
+        </div>
+    </header>
+    <div class="content">
+        <div class="game-container">
+            <div class="choice-wrapper choice-1 hidden"
+            data-choice="paper">
+                <div class="choice-bg"><img class="bg-top" src=
+                "./images/ring-paper.svg" alt="paper-bg">
+                <img class="bg-shadow" src=
+                "./images/ring-paper.svg" alt="paper-bg"></div>
+                <div class="choice"><img src=
+                "./images/icon-paper.svg" alt="paper-icon"></div>
             </div>
-
-            <div class="rules">
-                <button class="rules-button">RULES</button>
-                <div class="modal-wrapper">
-                    <div class="modal-content">
-                        <h2 class="modal-header">RULES</h2>
-                        <button class="modal-close">X</button>
-                        <img src="./images/image-rules.svg" alt="rules" />
-                    </div>
-                </div>
+            <div class="choice-wrapper choice-2 hidden"
+            data-choice="rock">
+                <div class="choice-bg"><img class="bg-top" src=
+                "./images/ring-rock.svg" alt="scissors-bg">
+                <img class="bg-shadow" src="./images/ring-rock.svg"
+                alt="rock-bg"></div>
+                <div class="choice"><img src=
+                "./images/icon-rock.svg" alt="scissors-icon"></div>
+            </div>
+            <div class="choice-wrapper choice-3 hidden"
+            data-choice="scissors">
+                <div class="choice-bg"><img class="bg-top" src=
+                "./images/ring-scissors.svg" alt="rock-bg">
+                <img class="bg-shadow" src=
+                "./images/ring-scissors.svg" alt=
+                "scissors-bg"></div>
+                <div class="choice"><img src=
+                "./images/icon-scissors.svg" alt="rock-icon"></div>
+            </div><img class="game-selection-bg hidden" src=
+            "./images/bg-triangle.svg" alt="triangle-background">
+            <div class="result-prompt hidden">
+                <h3>YOU LOSE</h3><button>PLAY AGAIN</button>
             </div>
         </div>
-        <footer class="attribution">
-            Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a> and <a href="https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/rock-paper-scissors" target="_blank">The Odin Project</a>. Coded by <a href="https://john-antoine.codes" target="_blank">John Antoine G.</a>.
-        </footer>
-        <script type="text/javascript" src="./script.js"></script>
-    </body>
+        <div class="rules">
+            <button class="rules-button">RULES</button>
+            <div class="modal-wrapper">
+                <div class="modal-content">
+                <h2 class="modal-header">RULES</h2><button class=
+                "modal-close">X</button> <img src=
+                "./images/image-rules.svg" alt="rules"></div>
+            </div>
+        </div>
+    </div>
+    <footer class="attribution">
+        Challenge by <a href=
+        "https://www.frontendmentor.io?ref=challenge" target=
+        "_blank">Frontend Mentor</a> and <a href=
+        "https://www.theodinproject.com/paths/foundations/courses/foundations/lessons/rock-paper-scissors"
+        target="_blank">The Odin Project</a>. Coded by <a href=
+        "https://john-antoine.codes" target="_blank">John Antoine
+        G.</a>.
+    </footer>
+    <script type="text/javascript" src="./script.js"></script>
+</body>
 </html>
