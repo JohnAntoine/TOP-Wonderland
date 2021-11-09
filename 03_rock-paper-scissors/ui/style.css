@@ -1,0 +1,272 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&display=swap");
+
+:root {
+  --animation-duration: 300ms;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  min-height: 512px;
+  width: 100vw;
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 600;
+  background-image: radial-gradient(hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 48px;
+}
+
+header {
+  width: 60%;
+  padding: 16px;
+  border-radius: 16px;
+  border: 2px solid #aaaaa7;
+  display: flex;
+  justify-content: space-between;
+}
+
+.score-wrapper {
+  padding: 8px 16px;
+  border-radius: 16px;
+  background: #fffffb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.score-text {
+  color: hsl(228, 45%, 44%);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.score-points {
+  color: hsl(237, 49%, 15%);
+  font-size: 2.5rem;
+}
+
+.content {
+  width: 60%;
+  max-width: 896px;
+  padding: 48px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-container {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  position: relative;
+}
+
+.game-selection-bg {
+  width: 100%;
+  height: auto;
+  position: relative;
+  visibility: visible;
+  opacity: 1;
+  z-index: -10;
+}
+
+.game-selection-bg.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.choice-wrapper {
+  width: 20vw;
+  aspect-ratio: 1 / 1;
+  max-width: 150px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%);
+}
+
+.choice-1.hidden,
+.choice-2.hidden,
+.choice-3.hidden {
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.choice-1.initial {
+  transform: translate(-150%, -120%);
+}
+
+.choice-2.initial {
+  transform: translate(-50%, 50%);
+}
+
+.choice-3.initial {
+  transform: translate(50%, -120%);
+}
+
+.choice-wrapper.chosen ,
+.choice-wrapper.house {
+  pointer-events: none;
+}
+
+.choice-wrapper.chosen {
+  transform: translate(-150%, -50%) scale(1.3);
+}
+
+.choice-wrapper.house {
+  transform: translate(50%, -50%) scale(1.3);
+}
+
+.choice {
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  position: relative;
+  border-radius: 50%;
+  background: #fffffb;
+  aspect-ratio: 1 / 1;
+  z-index: -1;
+}
+
+.choice-bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  transform: scale(1.3);
+}
+
+.choice-bg * {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.choice-wrapper:hover {
+  cursor: pointer;
+}
+
+.choice-wrapper:hover .choice,
+.choice-wrapper:hover .bg-top {
+  transform: scale(1.05);
+}
+
+.choice-wrapper:hover .bg-shadow {
+  transform: translate(0, -3%) scale(1.05);
+}
+
+.bg-shadow {
+  opacity: 0.5;
+  transform: translate(0, 3%);
+}
+
+.choice-bg img {
+  height: 100%;
+  width: 100%;
+}
+
+.choice img {
+  width: auto;
+  height: 100%;
+}
+
+.rules-button {
+  position: fixed;
+  right: 32px;
+  bottom: 96px;
+  background: none;
+  border: 2px solid #aaaaa7;
+  color: #fffffb;
+  border-radius: 5px;
+  font-family: "Barlow Semi Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 8px 24px;
+}
+
+.rules-button:hover {
+  cursor: pointer;
+}
+
+.modal-wrapper {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  visibility: hidden;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+.modal-wrapper.modal-show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  width: 50%;
+  height: auto;
+  max-width: 500px;
+  min-width: 300px;
+  padding: 32px;
+  background: #fffffb;
+  border-radius: 16px;
+  position: relative;
+}
+
+.modal-header {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(237, 49%, 15%);
+}
+
+.modal-close {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  border: none;
+  background: none;
+  font-size: 2rem;
+  font-weight: 400;
+  color: #aaaaa7;
+}
+
+.modal-close:hover {
+  cursor: pointer;
+  color: #6666a7;
+}
+
+.modal-content img {
+  width: 100%;
+  margin-top: 64px;
+}
+
+.attribution {
+  font-size: 11px;
+  text-align: center;
+  color: #aaaaa7;
+}
+
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}
