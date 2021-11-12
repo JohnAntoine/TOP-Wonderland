@@ -1,3 +1,7 @@
+// Game Variables
+
+let choicePlayer, choiceHouse, tagPlayer, tagHouse;
+
 // DOM Selectors
 
 const btnOpenRules = document.querySelector(".rules-button");
@@ -162,15 +166,15 @@ const showInitialState = () => {
 
 btnChoices.forEach((choice) => {
   choice.addEventListener("click", () => {
-    const choiceHouse = computerPlay();
-    const choicePlayer = choice.dataset.choice.toLowerCase();
+    choiceHouse = computerPlay();
+    choicePlayer = choice.dataset.choice.toLowerCase();
 
     hideInitialState();
 
-    const tagPlayer = document
+    tagPlayer = document
       .querySelector(`.choice-wrapper[data-choice="${choicePlayer}"]`)
       .cloneNode(true);
-    const tagHouse = document
+    tagHouse = document
       .querySelector(`.choice-wrapper[data-choice="${choiceHouse}"]`)
       .cloneNode(true);
 
@@ -193,50 +197,63 @@ btnChoices.forEach((choice) => {
       { once: true }
     );
 
-    window.addEventListener("animation_end", (e) => {
-      switch (e.detail.name) {
-        case "choiceEnd":
-          tagPlayer.classList.remove("hidden", "initial");
-          tagPlayer.classList.add("chosen");
-          break;
-        case "tagPlayerTransition":
-          tagHouse.classList.remove("hidden", "initial");
-          tagHouse.classList.add("house");
-          break;
-        case "tagHouseTransition":
-          tagHouse.classList.add("round-prompt");
-          tagPlayer.classList.add("round-prompt");
-          tagHouse.addEventListener(
-            "transitionend",
-            () => {
-              markAnimationEnd("tagHouseEnd");
-            },
-            { once: true }
-          );
-          break;
-        case "tagHouseEnd":
-          containerResult.classList.remove("hidden");
-          if (choiceHouse === choicePlayer) {
-            roundResult.textContent = "DRAW";
-          } else if (playRound(choicePlayer, choiceHouse)) {
-            tagPlayer.classList.add('shadow');
-            roundResult.textContent = "YOU WIN";
-            scoreCounter.textContent = ++score;
-            localStorage.setItem("score", score);
-          } else {
-            tagHouse.classList.add('shadow');
-            roundResult.textContent = "YOU LOSE";
-            scoreCounter.textContent = --score;
-            localStorage.setItem("score", score);
-          }
-          break;
-      }
-    });
-
     containerGame.appendChild(tagHouse);
     containerGame.appendChild(tagPlayer);
 
   });
+});
+
+// Custom Event Handler for animationEnd
+
+const markAnimationEnd = (name) => {
+  const event = new CustomEvent("animation_end", {
+    detail: {
+      name: name,
+    },
+  });
+  window.dispatchEvent(event);
+};
+
+// Handle Custom Animation Events
+
+window.addEventListener("animation_end", (e) => {
+  switch (e.detail.name) {
+    case "choiceEnd":
+      tagPlayer.classList.remove("hidden", "initial");
+      tagPlayer.classList.add("chosen");
+      break;
+    case "tagPlayerTransition":
+      tagHouse.classList.remove("hidden", "initial");
+      tagHouse.classList.add("house");
+      break;
+    case "tagHouseTransition":
+      tagHouse.classList.add("round-prompt");
+      tagPlayer.classList.add("round-prompt");
+      tagHouse.addEventListener(
+        "transitionend",
+        () => {
+          markAnimationEnd("tagHouseEnd");
+        },
+        { once: true }
+      );
+      break;
+    case "tagHouseEnd":
+      containerResult.classList.remove("hidden");
+      if (choiceHouse === choicePlayer) {
+        roundResult.textContent = "DRAW";
+      } else if (playRound(choicePlayer, choiceHouse)) {
+        tagPlayer.classList.add('shadow');
+        roundResult.textContent = "YOU WIN";
+        scoreCounter.textContent = ++score;
+        localStorage.setItem("score", score);
+      } else {
+        tagHouse.classList.add('shadow');
+        roundResult.textContent = "YOU LOSE";
+        scoreCounter.textContent = --score;
+        localStorage.setItem("score", score);
+      }
+      break;
+  }
 });
 
 // Restart Round
@@ -302,13 +319,3 @@ function playRound(playerSelection, computerSelection) {
   return playerWin;
 }
 
-// Custom Event Handler for animationEnd
-
-const markAnimationEnd = (name) => {
-  const event = new CustomEvent("animation_end", {
-    detail: {
-      name: name,
-    },
-  });
-  window.dispatchEvent(event);
-};
