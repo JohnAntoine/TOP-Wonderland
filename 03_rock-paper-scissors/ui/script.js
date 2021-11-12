@@ -43,23 +43,11 @@ document.addEventListener("readystatechange", () => {
       }
     `;
 
-    // TODO Remove Me
     const choiceDefault = `
       .choice {
         transition: transform ease-in-out calc(var(--animation-duration) * 0.33);
       }
     `;
-
-    // const choiceHouseDelay = `
-    //   .choice-1.house ,
-    //   .choice-2.house ,
-    //   .choice-3.house {
-    //     transition: transform ease-in-out var(--animation-duration)
-    //                 var(--animation-duration),
-    //                 opacity ease-in-out var(--animation-duration)
-    //                 var(--animation-duration);
-    //   }
-    // `;
 
     const bgTop = `
       .bg-top {
@@ -98,7 +86,6 @@ document.addEventListener("readystatechange", () => {
     styleSheet.insertRule(choiceDefault, styleSheet.rules.length);
     styleSheet.insertRule(gameSelectionBgVisible, styleSheet.rules.length);
     styleSheet.insertRule(choiceWrapperDefault, styleSheet.rules.length);
-    // styleSheet.insertRule(choiceHouseDelay, styleSheet.rules.length);
     styleSheet.insertRule(bgTop, styleSheet.rules.length);
     styleSheet.insertRule(bgShadow, styleSheet.rules.length);
     styleSheet.insertRule(transitionModalOpen, styleSheet.rules.length);
@@ -148,10 +135,6 @@ const showInitialChoices = () => {
   });
 };
 
-btnChoices.forEach((choice) => {
-  choice.addEventListener("transitionend", showInitialBg);
-});
-
 const hideInitialState = () => {
   btnChoices.forEach((choice) => {
     choice.addEventListener(
@@ -182,6 +165,8 @@ btnChoices.forEach((choice) => {
     const choiceHouse = computerPlay();
     const choicePlayer = choice.dataset.choice.toLowerCase();
 
+    hideInitialState();
+
     const tagPlayer = document
       .querySelector(`.choice-wrapper[data-choice="${choicePlayer}"]`)
       .cloneNode(true);
@@ -191,8 +176,6 @@ btnChoices.forEach((choice) => {
 
     tagHouse.classList.add("hidden");
     tagPlayer.classList.add("hidden");
-
-    hideInitialState();
 
     tagPlayer.addEventListener(
       "transitionend",
@@ -243,10 +226,12 @@ btnChoices.forEach((choice) => {
     if (choiceHouse === choicePlayer) {
       roundResult.textContent = "DRAW";
     } else if (playRound(choicePlayer, choiceHouse)) {
+      tagPlayer.classList.add('shadow');
       roundResult.textContent = "YOU WIN";
       scoreCounter.textContent = ++score;
       localStorage.setItem("score", score);
     } else {
+      tagHouse.classList.add('shadow');
       roundResult.textContent = "YOU LOSE";
       scoreCounter.textContent = --score;
       localStorage.setItem("score", score);
@@ -257,8 +242,29 @@ btnChoices.forEach((choice) => {
 // Restart Round
 
 btnResult.addEventListener("click", () => {
-  tempRevert();
+  playAgain();
 });
+
+const playAgain = () => {
+  const tagHouse = document.querySelector(".house");
+  const tagPlayer = document.querySelector(".chosen");
+  const tags = [tagHouse, tagPlayer];
+  tags.forEach((tag) => {
+    tag.addEventListener(
+      "transitionend",
+      () => {
+        tag.parentNode.removeChild(tag);
+      },
+      { once: true }
+    );
+    tag.classList.remove("round-prompt", "house", "chosen");
+    tag.classList.add("hidden");
+  });
+  containerResult.addEventListener("transitionend", () => {
+    showInitialState();
+  }, {once: true});
+  containerResult.classList.add("hidden");
+};
 
 // Game Logic
 
@@ -305,32 +311,4 @@ const markAnimationEnd = (name) => {
     },
   });
   window.dispatchEvent(event);
-};
-
-// TEMP FUNCTIONS
-
-const tempRevert = () => {
-  const tagHouse = document.querySelectorAll(".house");
-  const tagPlayer = document.querySelectorAll(".chosen");
-  const tags = [tagHouse, tagPlayer];
-  tags.forEach((tagList) => {
-    tagList.forEach((tag) => {
-      tag.addEventListener(
-        "transitionend",
-        () => {
-          tag.parentNode.removeChild(tag);
-        },
-        { once: true }
-      );
-      tag.classList.remove("round-prompt", "house");
-      tag.classList.add("hidden");
-    });
-  });
-  containerResult.addEventListener("transitionend", () => {
-    showInitialState();
-    containerResult.removeEventListener("transitionend", () => {
-      showInitialState();
-    });
-  });
-  containerResult.classList.add("hidden");
 };
