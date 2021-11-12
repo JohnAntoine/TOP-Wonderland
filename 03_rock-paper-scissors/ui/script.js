@@ -216,6 +216,19 @@ btnChoices.forEach((choice) => {
           break;
         case "tagHouseEnd":
           containerResult.classList.remove("hidden");
+          if (choiceHouse === choicePlayer) {
+            roundResult.textContent = "DRAW";
+          } else if (playRound(choicePlayer, choiceHouse)) {
+            tagPlayer.classList.add('shadow');
+            roundResult.textContent = "YOU WIN";
+            scoreCounter.textContent = ++score;
+            localStorage.setItem("score", score);
+          } else {
+            tagHouse.classList.add('shadow');
+            roundResult.textContent = "YOU LOSE";
+            scoreCounter.textContent = --score;
+            localStorage.setItem("score", score);
+          }
           break;
       }
     });
@@ -223,19 +236,6 @@ btnChoices.forEach((choice) => {
     containerGame.appendChild(tagHouse);
     containerGame.appendChild(tagPlayer);
 
-    if (choiceHouse === choicePlayer) {
-      roundResult.textContent = "DRAW";
-    } else if (playRound(choicePlayer, choiceHouse)) {
-      tagPlayer.classList.add('shadow');
-      roundResult.textContent = "YOU WIN";
-      scoreCounter.textContent = ++score;
-      localStorage.setItem("score", score);
-    } else {
-      tagHouse.classList.add('shadow');
-      roundResult.textContent = "YOU LOSE";
-      scoreCounter.textContent = --score;
-      localStorage.setItem("score", score);
-    }
   });
 });
 
