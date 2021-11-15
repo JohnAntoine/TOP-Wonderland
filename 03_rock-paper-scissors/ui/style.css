@@ -8,6 +8,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
 }
 
 body {
@@ -118,6 +122,7 @@ header {
   transform: translate(50%, -120%);
 }
 
+.choice-wrapper.disabled,
 .choice-wrapper.chosen,
 .choice-wrapper.house {
   pointer-events: none;

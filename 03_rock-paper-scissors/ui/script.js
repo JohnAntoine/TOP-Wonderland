@@ -143,8 +143,10 @@ const hideInitialState = () => {
   btnChoices.forEach((choice) => {
     choice.addEventListener(
       "transitionend",
-      () => {
-        markAnimationEnd("choiceEnd");
+      (e) => {
+        if (e.propertyName === 'opacity') {
+          markAnimationEnd("choiceEnd");
+        }
       },
       { once: true }
     );
@@ -159,13 +161,30 @@ const showInitialState = () => {
   btnChoices.forEach((choice) => {
     choice.addEventListener("transitionend", showInitialBg, { once: true });
   });
+  bgChoices.addEventListener('transitionend', () => choicesActive(true), {once: true});
   showInitialChoices();
+};
+
+// control choices state
+const choicesActive = bool => {
+  if (bool) {
+    btnChoices.forEach(choice => {
+      choice.classList.remove('disabled');
+    });
+  } else {
+    btnChoices.forEach(choice => {
+      choice.classList.add('disabled');
+    });
+  }
 };
 
 // Choice Event Hnadling
 
 btnChoices.forEach((choice) => {
   choice.addEventListener("click", () => {
+
+    choicesActive(false);
+
     choiceHouse = computerPlay();
     choicePlayer = choice.dataset.choice.toLowerCase();
 
