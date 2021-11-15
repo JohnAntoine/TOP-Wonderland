@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sketch.container {
+    width: 90%;
+    height: 90%;
+    background: lightgray;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cell {
+    width: calc(100% / 64);
+    height: calc(100% / 64);
+    display: inline-block;
+    background: limegreen;
+    border: 1px darkgreen solid;
+}
+
+.cell.colored {
+    background: black;
+}
