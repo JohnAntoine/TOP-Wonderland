@@ -143,10 +143,8 @@ const hideInitialState = () => {
   btnChoices.forEach((choice) => {
     choice.addEventListener(
       "transitionend",
-      (e) => {
-        if (e.propertyName === 'opacity') {
-          markAnimationEnd("choiceEnd");
-        }
+      () => {
+        markAnimationEnd("choiceEnd");
       },
       { once: true }
     );
@@ -235,11 +233,16 @@ const markAnimationEnd = (name) => {
 
 // Handle Custom Animation Events
 
+let choiceCount = 0;
 window.addEventListener("animation_end", (e) => {
   switch (e.detail.name) {
     case "choiceEnd":
-      tagPlayer.classList.remove("hidden", "initial");
-      tagPlayer.classList.add("chosen");
+      choiceCount++;
+      if (choiceCount >= 3) {
+        tagPlayer.classList.remove("hidden", "initial");
+        tagPlayer.classList.add("chosen");
+        choiceCount = 0;
+      }
       break;
     case "tagPlayerTransition":
       tagHouse.classList.remove("hidden", "initial");
