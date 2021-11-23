@@ -28,14 +28,4 @@ body {
 
 .cell {
     display: inline-block;
-    background: hsl(120, 70%, 50%);
-    border: 1px darkgreen solid;
-}
-
-.cell.colored {
-    background: black;
-}
-
-.cell.rainbow {
-    background: hsl(200, 80%, 80%);
 }
