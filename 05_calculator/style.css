@@ -1,0 +1,57 @@
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -ms-user-select: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: #0DD2BA;
+    background: -webkit-radial-gradient(center, #0DD2BA, #40477F);
+    background: -moz-radial-gradient(center, #0DD2BA, #40477F);
+    background: radial-gradient(ellipse at center, #0DD2BA, #40477F);    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons {
+    width: 30rem;
+    height: 40rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.buttons * {
+    font-size: 2rem;
+    font-weight: bolder;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.number {
+    color: darkturquoise;
+    background: #c6fdfd;
+}
+
+.operator {
+    color: ghostwhite;
+    background: darkturquoise;
+}
+
+.grid-span-3 {
+    grid-column: span 3;
+}
