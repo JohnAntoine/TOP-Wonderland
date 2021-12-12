@@ -1,3 +1,7 @@
+// Initialize main variables
+
+let numberA, numberB, operator;
+
 // Generate buttons
 
 const buttonsContainer = document.querySelector('.buttons');
@@ -45,6 +49,51 @@ function generateButtons() {
   return {buttonsNumbers, buttonsOperators}
 }
 
+// Button Events
+
+buttonsNumbers.forEach(number => {
+  number.addEventListener('click', e => {
+    target = e.target.textContent;
+    if (!numberA) numberA = target;
+    else if (!operator) numberA += target;
+    else if (!numberB) numberB = target;
+    else numberB += target;
+    if (numberB) console.log(numberA, operator, numberB);
+    else console.log(numberA);
+  });
+});
+
+buttonsOperators.forEach(button => {
+  button.addEventListener('click', (e) => {
+    target = e.target.textContent;
+    if (!operator) operator = target;
+    else if (numberB && numberB[numberB.length - 1] !== '.') {
+      const floatA = parseFloat(numberA);
+      const floatB = parseFloat(numberB);
+      switch (operator) {
+        case '+':
+          numberA = operate(add, floatA, floatB);
+          break;
+        case '-':
+          numberA = operate(substract, floatA, floatB);
+          break;
+        case '*':
+          numberA = operate(multiply, floatA, floatB);
+          break;
+        case '/':
+          numberA = operate(divide, floatA, floatB);
+          break;
+      }
+      operator = target;
+      numberB = null;
+      console.log(`result: ${numberA}`);
+    }
+
+  });
+});
+
+// Calc Functions
+
 function add(a, b) {
   return a + b;
 }
@@ -65,5 +114,3 @@ function divide(a, b) {
 function operate(op, a, b) {
   return op(a,b);
 }
-
-console.log(operate(divide, 1, 0));
