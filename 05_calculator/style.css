@@ -40,6 +40,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
+}
+
+.buttons *:hover {
+    cursor: pointer;
 }
 
 .number {
@@ -47,9 +52,30 @@ body {
     background: #c6fdfd;
 }
 
+.number-zero {
+    grid-column: span 2;
+}
+
+.number-row-one {
+    grid-row: 1;
+}
+
+.number-row-two {
+    grid-row: 2;
+}
+
+.number-row-three {
+    grid-row: 3;
+}
+
+.number-row-four {
+    grid-row: 4;
+}
+
 .operator {
     color: ghostwhite;
     background: darkturquoise;
+    grid-column: 4;
 }
 
 .grid-span-3 {
