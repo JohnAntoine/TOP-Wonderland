@@ -6,7 +6,7 @@ let numberA, numberB, decimalA, decimalB, bufferFull, operator;
 
 const buttonsContainer = document.querySelector('.buttons');
 const numbers = [1,2,3,4,5,6,7,8,9,0,'.'];
-const operators = ['+','-','*','/'];
+const operators = ['+','-','*','/','=','AC'];
 const buttonBase = document.createElement('button');
 const buttonsMain = {... generateButtons()};
 const buttonsNumbers = buttonsMain.buttonsNumbers;
@@ -34,6 +34,7 @@ function generateOperators(operatorList) {
     const buttonClone = buttonBase.cloneNode(false);
     buttonClone.textContent = operator;
     buttonClone.classList.add('operator');
+    if (operator === '=') buttonClone.classList.add('equal');
     tempFragment.appendChild(buttonClone);
   });
   return tempFragment;

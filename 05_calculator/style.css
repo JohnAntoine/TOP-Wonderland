@@ -133,8 +133,9 @@ footer a:hover {
     grid-column: 4;
 }
 
-.grid-span-3 {
-    grid-column: span 3;
+.operator.equal {
+    grid-column-start: 1;
+    grid-column-end: span 3;
 }
 
 .display-container,
