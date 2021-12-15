@@ -1,6 +1,6 @@
 // Initialize main variables
 
-let numberA, numberB, operator;
+let numberA, numberB, decimalA, decimalB, bufferFull, operator;
 
 // Generate buttons
 
@@ -51,46 +51,246 @@ function generateButtons() {
 
 // Button Events
 
+function btnPressNumber(e) {
+  if (bufferFull) {
+    console.log('full buffer');
+    return;
+  }
+  let decimalDot = false;
+  let lastDigit;
+  let target = e.target.textContent;
+  if (target === '.' && (numberA || numberB)) {
+    if (numberB && !decimalB) {
+      decimalDot = true;
+      decimalB = true;
+      lastDigit = parseInt(numberB) % 10;
+    } else if (numberA && !decimalA) {
+      decimalDot = true;
+      decimalA = true;
+      lastDigit = parseInt(numberA) % 10;
+    } else return;
+  } else if (target === '.') return;
+  const digitElement = document.querySelector('.number-svg.reference').cloneNode(true);
+  const docFrag = document.createDocumentFragment();
+  const displayContainer = document.querySelector('.display-low');
+
+  docFrag.appendChild(digitElement);
+  digitElement.classList.remove('reference');
+  if (decimalDot) {
+    shadeDigit(digitElement, lastDigit, decimalDot);
+    displayContainer.firstChild.remove();
+  } else {
+    shadeDigit(digitElement, parseInt(target));
+    displayContainer.lastChild.remove()
+  }
+  displayContainer.insertBefore(docFrag, displayContainer.firstChild);
+
+  if (numberA && !operator &&
+      ((numberA.length >= 9 && !decimalA) ||
+       (numberA.length >= 10 && decimalA))) {
+    bufferFull = true;
+  }
+  else if (numberB &&
+           ((numberB.length >= 9 && !decimalB) ||
+            (numberB.length >= 10 && decimalB))) {
+    bufferFull = true;
+  }
+
+  if (!numberA) numberA = target;
+  else if (!operator) numberA += target;
+  else if (!numberB) numberB = target;
+  else numberB += target;
+  if (numberB) console.log(numberA, operator, numberB);
+  else console.log(numberA);
+}
+
+function btnPressOperator(e) {
+  target = e.target.textContent;
+  if (!operator) {
+    operator = target;
+    decimalA, decimalB, bufferFull = null;
+    const lowDisplay = document.querySelector('.display-low');
+    const highDisplay = document.querySelector('.display-high');
+    let cloneDisplay = lowDisplay.cloneNode(true);
+    cloneDisplay.classList.remove('display-low');
+    cloneDisplay.classList.add('display-high');
+    cloneDisplay = addOperatorEquality(cloneDisplay, null, operator);
+    genDisplayNumbers('.number-svg','.display-low',10);
+    highDisplay.parentNode.replaceChild(cloneDisplay, highDisplay);
+  } else if (numberB && numberB[numberB.length - 1] !== '.') {
+    const floatA = parseFloat(numberA);
+    const floatB = parseFloat(numberB);
+    switch (operator) {
+      case '+':
+        numberA = operate(add, floatA, floatB);
+        break;
+      case '-':
+        numberA = operate(substract, floatA, floatB);
+        break;
+      case '*':
+        numberA = operate(multiply, floatA, floatB);
+        break;
+      case '/':
+        numberA = operate(divide, floatA, floatB);
+        break;
+    }
+    operator = target;
+    numberB = null;
+    console.log(`result: ${numberA}`);
+  }
+}
+
 buttonsNumbers.forEach(number => {
-  number.addEventListener('click', e => {
-    target = e.target.textContent;
-    if (!numberA) numberA = target;
-    else if (!operator) numberA += target;
-    else if (!numberB) numberB = target;
-    else numberB += target;
-    if (numberB) console.log(numberA, operator, numberB);
-    else console.log(numberA);
-  });
+  number.addEventListener('click', btnPressNumber);
 });
 
 buttonsOperators.forEach(button => {
-  button.addEventListener('click', (e) => {
-    target = e.target.textContent;
-    if (!operator) operator = target;
-    else if (numberB && numberB[numberB.length - 1] !== '.') {
-      const floatA = parseFloat(numberA);
-      const floatB = parseFloat(numberB);
-      switch (operator) {
-        case '+':
-          numberA = operate(add, floatA, floatB);
-          break;
-        case '-':
-          numberA = operate(substract, floatA, floatB);
-          break;
-        case '*':
-          numberA = operate(multiply, floatA, floatB);
-          break;
-        case '/':
-          numberA = operate(divide, floatA, floatB);
-          break;
-      }
-      operator = target;
-      numberB = null;
-      console.log(`result: ${numberA}`);
-    }
-
-  });
+  button.addEventListener('click', btnPressOperator);
 });
+
+// Generate display
+function genDisplayNumbers(svgClass, displayContainer, nOfDigits, withOperators=false) {
+  const display = document.querySelector(displayContainer);
+  let docFrag = document.createDocumentFragment();
+  const numReference = document.querySelector(svgClass);
+  const numbers = [];
+
+  for (let i = 0; i < nOfDigits; i++) {
+    const newNum = numReference.cloneNode(true);
+    newNum.classList.remove('reference');
+    numbers.push(newNum);
+    docFrag.appendChild(newNum);
+  }
+
+  if (withOperators) {
+    docFrag = addOperatorEquality(docFrag);
+  }
+
+  while (display.firstChild) {
+    display.firstChild.remove();
+  }
+
+  display.appendChild(docFrag);
+
+  return numbers;
+}
+
+function addOperatorEquality(displayContainer, equal=null, operator=null) {
+  const operatorSvg = document.querySelector('.operator-svg');
+  const equalitySvg = document.querySelector('.equality-svg');
+  operatorSvg.classList.remove('reference');
+  equalitySvg.classList.remove('reference');
+
+  switch (equal) {
+    case null:
+      break;
+    case 'equality':
+      equalitySvg.querySelectorAll('.eq').forEach(dash => {
+        dash.classList.add('shaded');
+      });
+      break;
+    case 'approx':
+      equalitySvg.querySelectorAll('.approx').forEach(dash => {
+        dash.classList.add('shaded');
+      });
+      break;
+  }
+
+  switch (operator) {
+    case null:
+      break;
+    case '+':
+      operatorSvg.querySelectorAll('.dot,.v1,.v2,.h1,.h2').forEach(dash => {
+        dash.classList.add('shaded');
+      });
+      break;
+    case '-':
+      operatorSvg.querySelectorAll('.dot,.h1,.h2').forEach(dash => {
+        dash.classList.add('shaded');
+      });
+      break;
+    case '*':
+      operatorSvg.querySelectorAll('.dot,.d1,.d2,.d3,.d4').forEach(dash => {
+        dash.classList.add('shaded');
+      });
+      break;
+    case '/':
+      operatorSvg.querySelectorAll('.dot,.d2,.d4').forEach(dash => {
+        dash.classList.add('shaded');
+      });
+      break;
+  }
+
+
+  displayContainer.appendChild(equalitySvg);
+  displayContainer.insertBefore(operatorSvg, displayContainer.firstChild);
+
+  return displayContainer;
+
+}
+
+function shadeDigit(numberElement, digit, dot=false) {
+  let segmentsSelected;
+  switch (digit) {
+    case 0:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV'
+      )
+      break;
+    case 1:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topRightV,.bottomRightV'
+      )
+      break;
+    case 2:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.middleH,.bottomH,.bottomLeftV,.topRightV'
+      )
+      break;
+    case 3:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.middleH,.bottomH,.topRightV,.bottomRightV'
+      )
+      break;
+    case 4:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.middleH,.topLeftV,.topRightV,.bottomRightV'
+      )
+      break;
+    case 5:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.middleH,.bottomH,.topLeftV,.bottomRightV'
+      )
+      break;
+    case 6:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.bottomRightV'
+      )
+      break;
+    case 7:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.topRightV,.bottomRightV'
+      )
+      break;
+    case 8:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV'
+      )
+      break;
+    case 9:
+      segmentsSelected = numberElement.querySelectorAll(
+        '.topH,.middleH,.bottomH,.topLeftV,.topRightV,.bottomRightV'
+      )
+      break;
+  }
+  segmentsSelected.forEach(shaded => {
+    shaded.classList.add('shaded');
+  });
+  if (dot) numberElement.querySelector('circle').classList.add('shaded');
+}
+
+genDisplayNumbers('.number-svg', '.display-high', 10, true);
+genDisplayNumbers('.number-svg', '.display-low', 10);
 
 // Calc Functions
 
