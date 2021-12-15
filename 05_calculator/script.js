@@ -50,6 +50,18 @@ function generateButtons() {
 }
 
 // Button Events
+const checkNumberOperator = (num, dec, op = false) =>
+      (num && !op && (
+        (num.length >= 9 && !dec) ||
+        (num.length >= 10 && dec)
+      ));
+
+const operations = {
+  '+': add,
+  '-': substract,
+  '*': multiply,
+  '/': divide
+};
 
 function btnPressNumber(e) {
   if (bufferFull) {
@@ -85,16 +97,9 @@ function btnPressNumber(e) {
   }
   displayContainer.insertBefore(docFrag, displayContainer.firstChild);
 
-  if (numberA && !operator &&
-      ((numberA.length >= 9 && !decimalA) ||
-       (numberA.length >= 10 && decimalA))) {
-    bufferFull = true;
-  }
-  else if (numberB &&
-           ((numberB.length >= 9 && !decimalB) ||
-            (numberB.length >= 10 && decimalB))) {
-    bufferFull = true;
-  }
+  if (checkNumberOperator(numberA, decimalA, operator) ||
+      checkNumberOperator(numberB, decimalB))
+        bufferFull = true;
 
   if (!numberA) numberA = target;
   else if (!operator) numberA += target;
@@ -106,7 +111,9 @@ function btnPressNumber(e) {
 
 function btnPressOperator(e) {
   target = e.target.textContent;
+
   if (!operator) {
+
     operator = target;
     decimalA, decimalB, bufferFull = null;
     const lowDisplay = document.querySelector('.display-low');
@@ -117,26 +124,16 @@ function btnPressOperator(e) {
     cloneDisplay = addOperatorEquality(cloneDisplay, null, operator);
     genDisplayNumbers('.number-svg','.display-low',10);
     highDisplay.parentNode.replaceChild(cloneDisplay, highDisplay);
+
   } else if (numberB && numberB[numberB.length - 1] !== '.') {
+
     const floatA = parseFloat(numberA);
     const floatB = parseFloat(numberB);
-    switch (operator) {
-      case '+':
-        numberA = operate(add, floatA, floatB);
-        break;
-      case '-':
-        numberA = operate(substract, floatA, floatB);
-        break;
-      case '*':
-        numberA = operate(multiply, floatA, floatB);
-        break;
-      case '/':
-        numberA = operate(divide, floatA, floatB);
-        break;
-    }
+    numberA = operate(operations[operator], floatA, floatB);
     operator = target;
     numberB = null;
     console.log(`result: ${numberA}`);
+
   }
 }
 
@@ -175,6 +172,26 @@ function genDisplayNumbers(svgClass, displayContainer, nOfDigits, withOperators=
   return numbers;
 }
 
+const operatorShading = {
+  '+': '.dot,.v1,.v2,.h1,.h2',
+  '-': '.dot,.h1,.h2',
+  '*': '.dot,.d1,.d2,.d3,.d4',
+  '/': '.dot,.d2,.d4'
+}
+
+const numberShading = {
+  0: '.topH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV',
+  1: '.topRightV,.bottomRightV',
+  2: '.topH,.middleH,.bottomH,.bottomLeftV,.topRightV',
+  3: '.topH,.middleH,.bottomH,.topRightV,.bottomRightV',
+  4: '.middleH,.topLeftV,.topRightV,.bottomRightV',
+  5: '.topH,.middleH,.bottomH,.topLeftV,.bottomRightV',
+  6: '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.bottomRightV',
+  7: '.topH,.topRightV,.bottomRightV',
+  8: '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV',
+  9: '.topH,.middleH,.bottomH,.topLeftV,.topRightV,.bottomRightV'
+}
+
 function addOperatorEquality(displayContainer, equal=null, operator=null) {
   const operatorSvg = document.querySelector('.operator-svg');
   const equalitySvg = document.querySelector('.equality-svg');
@@ -196,31 +213,11 @@ function addOperatorEquality(displayContainer, equal=null, operator=null) {
       break;
   }
 
-  switch (operator) {
-    case null:
-      break;
-    case '+':
-      operatorSvg.querySelectorAll('.dot,.v1,.v2,.h1,.h2').forEach(dash => {
-        dash.classList.add('shaded');
-      });
-      break;
-    case '-':
-      operatorSvg.querySelectorAll('.dot,.h1,.h2').forEach(dash => {
-        dash.classList.add('shaded');
-      });
-      break;
-    case '*':
-      operatorSvg.querySelectorAll('.dot,.d1,.d2,.d3,.d4').forEach(dash => {
-        dash.classList.add('shaded');
-      });
-      break;
-    case '/':
-      operatorSvg.querySelectorAll('.dot,.d2,.d4').forEach(dash => {
-        dash.classList.add('shaded');
-      });
-      break;
+  if (operator !== null) {
+    operatorSvg.querySelectorAll(operatorShading[operator]).forEach(dash => {
+      dash.classList.add('shaded');
+    });
   }
-
 
   displayContainer.appendChild(equalitySvg);
   displayContainer.insertBefore(operatorSvg, displayContainer.firstChild);
@@ -230,62 +227,12 @@ function addOperatorEquality(displayContainer, equal=null, operator=null) {
 }
 
 function shadeDigit(numberElement, digit, dot=false) {
-  let segmentsSelected;
-  switch (digit) {
-    case 0:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV'
-      )
-      break;
-    case 1:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topRightV,.bottomRightV'
-      )
-      break;
-    case 2:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.middleH,.bottomH,.bottomLeftV,.topRightV'
-      )
-      break;
-    case 3:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.middleH,.bottomH,.topRightV,.bottomRightV'
-      )
-      break;
-    case 4:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.middleH,.topLeftV,.topRightV,.bottomRightV'
-      )
-      break;
-    case 5:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.middleH,.bottomH,.topLeftV,.bottomRightV'
-      )
-      break;
-    case 6:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.bottomRightV'
-      )
-      break;
-    case 7:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.topRightV,.bottomRightV'
-      )
-      break;
-    case 8:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV'
-      )
-      break;
-    case 9:
-      segmentsSelected = numberElement.querySelectorAll(
-        '.topH,.middleH,.bottomH,.topLeftV,.topRightV,.bottomRightV'
-      )
-      break;
-  }
+  const segmentsSelected = numberElement.querySelectorAll(numberShading[digit]);
+
   segmentsSelected.forEach(shaded => {
     shaded.classList.add('shaded');
   });
+
   if (dot) numberElement.querySelector('circle').classList.add('shaded');
 }
 
