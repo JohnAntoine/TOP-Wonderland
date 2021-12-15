@@ -68,9 +68,11 @@ function btnPressNumber(e) {
     console.log('full buffer');
     return;
   }
+
   let decimalDot = false;
   let lastDigit;
   let target = e.target.textContent;
+
   if (target === '.' && (numberA || numberB)) {
     if (numberB && !decimalB) {
       decimalDot = true;
@@ -82,6 +84,7 @@ function btnPressNumber(e) {
       lastDigit = parseInt(numberA) % 10;
     } else return;
   } else if (target === '.') return;
+
   const digitElement = document.querySelector('.number-svg.reference').cloneNode(true);
   const docFrag = document.createDocumentFragment();
   const displayContainer = document.querySelector('.display-low');
@@ -129,7 +132,7 @@ function btnPressOperator(e) {
 
     const floatA = parseFloat(numberA);
     const floatB = parseFloat(numberB);
-    numberA = operate(operations[operator], floatA, floatB);
+    numberA = operate(operations[operator], floatA, floatB).toString();
     operator = target;
     numberB = null;
     console.log(`result: ${numberA}`);
