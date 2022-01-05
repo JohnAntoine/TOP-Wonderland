@@ -2,7 +2,7 @@
 
 :root {
     --main-color-dark: hsl(181,100%,40%);
-    --main-color-darker: hsl(181,100%,39%);
+    --main-color-darker: hsl(181,100%,38%);
     --main-color-light: hsl(180,93%,88%);
     --main-color-lighter: hsl(180,93%,98%);
     --background-gr-dark: hsl(233,33%,37%);
@@ -139,8 +139,8 @@ footer a:hover {
 }
 
 .display-container,
-.display-high,
-.display-low {
+.display-top,
+.display-bottom {
     width: 100%;
     display: flex;
     justify-content: center;
@@ -155,8 +155,8 @@ footer a:hover {
     gap: 8px;
 }
 
-.display-high,
-.display-low {
+.display-top,
+.display-bottom {
     gap: 4px;
     flex-direction: row-reverse;
 }
