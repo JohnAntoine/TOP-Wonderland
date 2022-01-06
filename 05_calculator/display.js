@@ -90,7 +90,11 @@ export function displayResult(stateObject) {
     }
   });
 
-  addOperatorEquality(displayFragment, null, stateObject.operator);
+  if (stateObject.operator === '=') {
+    addOperatorEquality(displayFragment, 'equality');
+  } else {
+    addOperatorEquality(displayFragment, null, stateObject.operator);
+  }
   genDisplayNumbers(display.bottom, 10);
   display.top.parentNode.replaceChild(displayFragment, display.top);
 }

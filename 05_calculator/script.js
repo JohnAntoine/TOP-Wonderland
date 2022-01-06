@@ -138,6 +138,7 @@ function btnPressOperator(e) {
     stateObject.decimalB = null;
     stateObject.bufferFull = null;
     display.displayResult(stateObject);
+    if (target === '=') stateObject.operator = null;
   }
 }
 
