@@ -46,7 +46,6 @@ export function genDisplayNumbers(displayContainer, nOfDigits, withOperators=fal
 
   for (let i = 0; i < nOfDigits; i++) {
     const newNum = getSVG('number');
-    newNum.classList.remove('reference');
     numbers.push(newNum);
     docFrag.appendChild(newNum);
   }
@@ -83,29 +82,23 @@ export function displayResult(stateObject, state) {
       const compoundFragment = document.createElement('div');
       compoundFragment.classList.add('display-top');
       stateObject.numberA.split('').forEach(digit => {
-        const digitClone = svgBase.number.cloneNode(true);
+        const digitClone = getSVG('number');
         shadeDigit(digitClone, parseInt(digit));
-        digitClone.classList.remove('reference')
         compoundFragment.insertBefore(digitClone ,compoundFragment.firstChild);
-        // compoundFragment.appendChild(digitClone);
       });
       for (let i = compoundFragment.childElementCount; i < 10; i++) {
-        const digitClone = svgBase.number.cloneNode(true);
-        digitClone.classList.remove('reference')
+        const digitClone = getSVG('number');
         compoundFragment.appendChild(digitClone);
       }
       genDisplayNumbers(display.bottom, 10);
       display.top.parentNode.replaceChild(compoundFragment, display.top);
-      console.log(compoundFragment);
       break;
-
   }
-
 }
 
 export function addOperatorEquality(displayContainer, equal=null, operator=null) {
-  const operatorSvg = getSVG('operator').cloneNode(true);
-  const equalitySvg = getSVG('equality').cloneNode(true);
+  const operatorSvg = getSVG('operator');
+  const equalitySvg = getSVG('equality');
 
   switch (equal) {
     case null:

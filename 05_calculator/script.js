@@ -100,12 +100,11 @@ function btnPressNumber(e) {
     } else return;
   } else if (target === '.') return;
 
-  const digitElement = svgBase.number.cloneNode(true);
+  const digitElement = display.getSVG('number');
   const docFrag = document.createDocumentFragment();
   const displayContainer = document.querySelector('.display-bottom');
 
   docFrag.appendChild(digitElement);
-  digitElement.classList.remove('reference');
   if (decimalDot) {
     display.shadeDigit(digitElement, lastDigit, decimalDot);
     displayContainer.firstChild.remove();
@@ -148,9 +147,10 @@ function btnPressOperator(e) {
     const floatB = parseFloat(stateObject.numberB);
     stateObject.numberA = logic.operate(operations[stateObject.operator], floatA, floatB).toString();
     stateObject.operator = target;
-    stateObject.numberB, stateObject.decimalB, stateObject.bufferFull = null, null, null;
+    stateObject.numberB = null;
+    stateObject.decimalB = null;
+    stateObject.bufferFull = null;
     display.displayResult(stateObject, 'compound');
-
   }
 }
 
