@@ -31,12 +31,12 @@ function getDisplays() {
   }
 }
 
-export function getSVG(type) {
+function getSVG(type) {
   return svgBase[type].cloneNode(true);
 }
 
 // Generate Display
-export function genDisplayNumbers(displayContainer, nOfDigits, withOperators=false) {
+function genDisplayNumbers(displayContainer, nOfDigits, withOperators=false) {
   const docFrag = document.createDocumentFragment();
   const numbers = [];
 
@@ -96,7 +96,25 @@ export function displayResult(stateObject, state) {
   }
 }
 
-export function addOperatorEquality(displayContainer, equal=null, operator=null) {
+export function addInputNumber(number, decimalDot, lastDigit) {
+  const display = {...getDisplays()};
+
+  const digitElement = getSVG('number');
+  const docFrag = document.createDocumentFragment();
+  const displayContainer = display.bottom;
+
+  docFrag.appendChild(digitElement);
+  if (decimalDot) {
+    shadeDigit(digitElement, lastDigit, decimalDot);
+    displayContainer.firstChild.remove();
+  } else {
+    shadeDigit(digitElement, number);
+    displayContainer.lastChild.remove()
+  }
+  displayContainer.insertBefore(docFrag, displayContainer.firstChild);
+};
+
+function addOperatorEquality(displayContainer, equal=null, operator=null) {
   const operatorSvg = getSVG('operator');
   const equalitySvg = getSVG('equality');
 
@@ -128,7 +146,7 @@ export function addOperatorEquality(displayContainer, equal=null, operator=null)
 
 }
 
-export function shadeDigit(numberElement, digit, dot=false) {
+function shadeDigit(numberElement, digit, dot=false) {
   const segmentsSelected = numberElement.querySelectorAll(numberShading[digit]);
 
   segmentsSelected.forEach(shaded => {

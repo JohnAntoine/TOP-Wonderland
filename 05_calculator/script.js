@@ -2,7 +2,6 @@
 
 import logic from './logic.js';
 import * as display from './display.js';
-import svgBase from './svgHelper.js';
 
 // Initialize stateObject
 
@@ -100,19 +99,7 @@ function btnPressNumber(e) {
     } else return;
   } else if (target === '.') return;
 
-  const digitElement = display.getSVG('number');
-  const docFrag = document.createDocumentFragment();
-  const displayContainer = document.querySelector('.display-bottom');
-
-  docFrag.appendChild(digitElement);
-  if (decimalDot) {
-    display.shadeDigit(digitElement, lastDigit, decimalDot);
-    displayContainer.firstChild.remove();
-  } else {
-    display.shadeDigit(digitElement, parseInt(target));
-    displayContainer.lastChild.remove()
-  }
-  displayContainer.insertBefore(docFrag, displayContainer.firstChild);
+  display.addInputNumber(parseInt(target), decimalDot, lastDigit);
 
   if (checkNumberOperator(stateObject.numberA, stateObject.decimalA, stateObject.operator) ||
       checkNumberOperator(stateObject.numberB, stateObject.decimalB))
