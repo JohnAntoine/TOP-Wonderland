@@ -99,7 +99,7 @@ function btnPressNumber(e) {
     } else return;
   } else if (target === '.') return;
 
-  display.addInputNumber(parseInt(target), decimalDot, lastDigit);
+  display.addDisplayNumber({number: parseInt(target), decimalDot, lastDigit});
 
   if (checkNumberOperator(stateObject.numberA, stateObject.decimalA, stateObject.operator) ||
       checkNumberOperator(stateObject.numberB, stateObject.decimalB))
@@ -126,7 +126,7 @@ function btnPressOperator(e) {
 
     stateObject.operator = target;
     stateObject.decimalA, stateObject.decimalB, stateObject.bufferFull = null,null,null;
-    display.displayResult(stateObject,'initial');
+    display.displayResult(stateObject);
 
   } else if (stateObject.numberB && stateObject.numberB[stateObject.numberB.length - 1] !== '.') {
 
@@ -137,7 +137,7 @@ function btnPressOperator(e) {
     stateObject.numberB = null;
     stateObject.decimalB = null;
     stateObject.bufferFull = null;
-    display.displayResult(stateObject, 'compound');
+    display.displayResult(stateObject);
   }
 }
 

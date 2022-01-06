@@ -20,7 +20,8 @@ const numberShading = {
   6: '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.bottomRightV',
   7: '.topH,.topRightV,.bottomRightV',
   8: '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV',
-  9: '.topH,.middleH,.bottomH,.topLeftV,.topRightV,.bottomRightV'
+  9: '.topH,.middleH,.bottomH,.topLeftV,.topRightV,.bottomRightV',
+  10: '.middleH'
 }
 
 // Helper Functions
@@ -66,52 +67,49 @@ export function resetDisplay() {
   genDisplayNumbers(display.bottom, 10);
 }
 
-export function displayResult(stateObject, state) {
+export function displayResult(stateObject) {
   const display = { ... getDisplays() };
 
-  switch(state) {
-    case 'initial':
-      const cloneDisplay = display.bottom.cloneNode(true);
-      cloneDisplay.classList.remove('display-bottom');
-      cloneDisplay.classList.add('display-top');
-      const cloneDisplayOp = addOperatorEquality(cloneDisplay, null, stateObject.operator);
-      genDisplayNumbers(display.bottom, 10);
-      display.top.parentNode.replaceChild(cloneDisplayOp, display.top);
-      break;
-    case 'compound':
-      const compoundFragment = document.createElement('div');
-      compoundFragment.classList.add('display-top');
-      stateObject.numberA.split('').forEach(digit => {
-        const digitClone = getSVG('number');
-        shadeDigit(digitClone, parseInt(digit));
-        compoundFragment.insertBefore(digitClone ,compoundFragment.firstChild);
-      });
-      for (let i = compoundFragment.childElementCount; i < 10; i++) {
-        const digitClone = getSVG('number');
-        compoundFragment.appendChild(digitClone);
-      }
-      genDisplayNumbers(display.bottom, 10);
-      display.top.parentNode.replaceChild(compoundFragment, display.top);
-      break;
-  }
+  const displayFragment = document.createElement('div');
+  displayFragment.classList.add('display-top');
+  genDisplayNumbers(displayFragment, 10);
+  let lastDigit;
+
+  stateObject.numberA.split('').forEach(digit => {
+    switch (digit) {
+      case '.':
+        addDisplayNumber({ decimalDot: true, lastDigit, display: displayFragment });
+        break;
+      case '-':
+        addDisplayNumber({ number: 10, display: displayFragment });
+        break;
+      default:
+        addDisplayNumber({ number: parseInt(digit), display: displayFragment });
+        lastDigit = parseInt(digit);
+        break;
+    }
+  });
+
+  addOperatorEquality(displayFragment, null, stateObject.operator);
+  genDisplayNumbers(display.bottom, 10);
+  display.top.parentNode.replaceChild(displayFragment, display.top);
 }
 
-export function addInputNumber(number, decimalDot, lastDigit) {
-  const display = {...getDisplays()};
+export function addDisplayNumber({number, decimalDot, lastDigit, display=null}) {
+  if (!display) display = {...getDisplays()}.bottom;
 
   const digitElement = getSVG('number');
   const docFrag = document.createDocumentFragment();
-  const displayContainer = display.bottom;
 
   docFrag.appendChild(digitElement);
   if (decimalDot) {
     shadeDigit(digitElement, lastDigit, decimalDot);
-    displayContainer.firstChild.remove();
+    display.firstChild.remove();
   } else {
     shadeDigit(digitElement, number);
-    displayContainer.lastChild.remove()
+    display.lastChild.remove()
   }
-  displayContainer.insertBefore(docFrag, displayContainer.firstChild);
+  display.insertBefore(docFrag, display.firstChild);
 };
 
 function addOperatorEquality(displayContainer, equal=null, operator=null) {
