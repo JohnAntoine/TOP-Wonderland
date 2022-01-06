@@ -11,7 +11,8 @@ const stateObject = {
   decimalA: null,
   decimalB: null,
   bufferFull: null,
-  operator: null
+  operator: null,
+  afterEquality: null
 };
 
 // Generate buttons
@@ -82,6 +83,10 @@ function btnPressNumber(e) {
     console.log('full buffer');
     return;
   }
+  if (stateObject.afterEquality) {
+    stateObject.numberA = null;
+    stateObject.afterEquality = null;
+  }
 
   let decimalDot = false;
   let lastDigit;
@@ -119,6 +124,8 @@ function btnPressNumber(e) {
 }
 
 function btnPressOperator(e) {
+  if (stateObject.afterEquality) stateObject.afterEquality = null;
+
   let target;
   if (e.key === 'Enter') target = '=';
   else if (e.key) target = e.key;
@@ -148,7 +155,10 @@ function btnPressOperator(e) {
     stateObject.decimalB = null;
     stateObject.bufferFull = null;
     display.displayResult(stateObject);
-    if (target === '=') stateObject.operator = null;
+    if (target === '=') {
+      stateObject.operator = null;
+      stateObject.afterEquality = true;
+    }
   }
 }
 
