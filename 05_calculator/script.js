@@ -17,7 +17,7 @@ const stateObject = {
 // Generate buttons
 
 const buttonsContainer = document.querySelector('.buttons');
-const numbers = [1,2,3,4,5,6,7,8,9,0,'.'];
+const numbers = ['1','2','3','4','5','6','7','8','9','0','.'];
 const operators = ['+','-','*','/','=','AC'];
 const buttonBase = document.createElement('button');
 const buttonsMain = {... generateButtons()};
@@ -30,7 +30,7 @@ function generateNumbers(numberList) {
     const buttonClone = buttonBase.cloneNode(false);
     buttonClone.textContent = number;
     buttonClone.classList.add('number');
-    if (!number) buttonClone.classList.add('number-zero','number-row-four');
+    if (number === '0') buttonClone.classList.add('number-zero','number-row-four');
     else if (number <= 3) buttonClone.classList.add('number-row-one');
     else if (number <= 6) buttonClone.classList.add('number-row-two');
     else if (number <= 9) buttonClone.classList.add('number-row-three');
@@ -85,7 +85,12 @@ function btnPressNumber(e) {
 
   let decimalDot = false;
   let lastDigit;
-  let target = e.target.textContent;
+  let target;
+  if (e.key) {
+    target = e.key;
+  } else {
+    target = e.target.textContent;
+  }
 
   if (target === '.' && (stateObject.numberA || stateObject.numberB)) {
     if (stateObject.numberB && !stateObject.decimalB) {
@@ -114,7 +119,10 @@ function btnPressNumber(e) {
 }
 
 function btnPressOperator(e) {
-  const target = e.target.textContent;
+  let target;
+  if (e.key === 'Enter') target = '=';
+  else if (e.key) target = e.key;
+  else target = e.target.textContent;
 
   if (target === 'AC') {
     logic.resetCalc(stateObject, display.resetDisplay);
@@ -125,7 +133,9 @@ function btnPressOperator(e) {
       !stateObject.operator && target !== '=') {
 
     stateObject.operator = target;
-    stateObject.decimalA, stateObject.decimalB, stateObject.bufferFull = null,null,null;
+    stateObject.decimalA = null;
+    stateObject.decimalB = null;
+    stateObject.bufferFull = null;
     display.displayResult(stateObject);
 
   } else if (stateObject.numberB && stateObject.numberB[stateObject.numberB.length - 1] !== '.') {
@@ -148,6 +158,14 @@ buttonsNumbers.forEach(number => {
 
 buttonsOperators.forEach(button => {
   button.addEventListener('click', btnPressOperator);
+});
+
+window.addEventListener('keypress', (e) => {
+  if (numbers.includes(e.key)) btnPressNumber(e);
+  else if (operators.includes(e.key)) btnPressOperator(e);
+  else if (e.key === 'Enter') btnPressOperator(e);
+  else if (e.key === 'c') logic.resetCalc(stateObject, display.resetDisplay);
+  else console.log(e.key);
 });
 
 display.resetDisplay();
