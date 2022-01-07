@@ -90,8 +90,10 @@ export function displayResult(stateObject) {
     }
   });
 
-  if (stateObject.operator === '=') {
-    addOperatorEquality(displayFragment, 'equality');
+  if (stateObject.approx) {
+    addOperatorEquality(displayFragment, 'approx', stateObject.operator);
+  } else if (stateObject.operator === '=')  {
+    addOperatorEquality(displayFragment, 'equality', stateObject.operator);
   } else {
     addOperatorEquality(displayFragment, null, stateObject.operator);
   }

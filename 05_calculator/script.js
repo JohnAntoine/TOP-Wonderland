@@ -12,6 +12,7 @@ const stateObject = {
   decimalB: null,
   bufferFull: null,
   operator: null,
+  approx: null,
   afterEquality: null
 };
 
@@ -147,14 +148,18 @@ function btnPressOperator(e) {
 
   } else if (stateObject.numberB && stateObject.numberB[stateObject.numberB.length - 1] !== '.') {
 
-    // const floatA = parseFloat(stateObject.numberA);
-    // const floatB = parseFloat(stateObject.numberB);
-    stateObject.numberA = logic.operate(operations[stateObject.operator], stateObject.numberA, stateObject.numberB).toString();
+    stateObject.numberA = logic.operate(operations[stateObject.operator], stateObject.numberA, stateObject.numberB);
+    if (stateObject.numberA.toString().length > 10) {
+      stateObject.numberA = (Math.floor(stateObject.numberA * 10**4) / 10**4).toString();
+      stateObject.approx = true;
+    } else stateObject.numberA = stateObject.numberA.toString();
+
     stateObject.operator = target;
     stateObject.numberB = null;
     stateObject.decimalB = null;
     stateObject.bufferFull = null;
     display.displayResult(stateObject);
+    stateObject.approx = null;
     if (target === '=') {
       stateObject.operator = null;
       stateObject.afterEquality = true;
