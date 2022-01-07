@@ -147,9 +147,9 @@ function btnPressOperator(e) {
 
   } else if (stateObject.numberB && stateObject.numberB[stateObject.numberB.length - 1] !== '.') {
 
-    const floatA = parseFloat(stateObject.numberA);
-    const floatB = parseFloat(stateObject.numberB);
-    stateObject.numberA = logic.operate(operations[stateObject.operator], floatA, floatB).toString();
+    // const floatA = parseFloat(stateObject.numberA);
+    // const floatB = parseFloat(stateObject.numberB);
+    stateObject.numberA = logic.operate(operations[stateObject.operator], stateObject.numberA, stateObject.numberB).toString();
     stateObject.operator = target;
     stateObject.numberB = null;
     stateObject.decimalB = null;
@@ -161,6 +161,8 @@ function btnPressOperator(e) {
     }
   }
 }
+
+// Event Listners
 
 buttonsNumbers.forEach(number => {
   number.addEventListener('click', btnPressNumber);
