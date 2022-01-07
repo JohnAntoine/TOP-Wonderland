@@ -13,7 +13,8 @@ const stateObject = {
   bufferFull: null,
   operator: null,
   approx: null,
-  afterEquality: null
+  afterEquality: null,
+  error: null
 };
 
 // Generate buttons
@@ -80,6 +81,9 @@ const operations = {
 };
 
 function btnPressNumber(e) {
+  if (stateObject.error) {
+    logic.resetCalc(stateObject, display.resetDisplay);
+  }
   if (stateObject.bufferFull) {
     console.log('full buffer');
     return;
@@ -135,9 +139,23 @@ function btnPressOperator(e) {
   if (target === 'AC') {
     logic.resetCalc(stateObject, display.resetDisplay);
     return;
+  } else if (target === '-') {
+    if (!stateObject.numberA) {
+      display.resetDisplay();
+      stateObject.error = null;
+      stateObject.numberA = '-';
+      display.addDisplayNumber({number: 10});
+      return;
+    } else if (stateObject.operator && !stateObject.numberB) {
+      stateObject.numberB = '-';
+      display.addDisplayNumber({number: 10});
+      return;
+    }
   }
 
-  if (stateObject.numberA && stateObject.numberA[stateObject.numberA.length - 1] !== '.' &&
+  if (stateObject.numberA &&
+      stateObject.numberA[stateObject.numberA.length - 1] !== '.' &&
+      stateObject.numberA[stateObject.numberA.length - 1] !== '-' &&
       !stateObject.operator && target !== '=') {
 
     stateObject.operator = target;
@@ -146,9 +164,16 @@ function btnPressOperator(e) {
     stateObject.bufferFull = null;
     display.displayResult(stateObject);
 
-  } else if (stateObject.numberB && stateObject.numberB[stateObject.numberB.length - 1] !== '.') {
+  } else if (stateObject.numberB &&
+             stateObject.numberB[stateObject.numberB.length - 1] !== '-' &&
+             stateObject.numberB[stateObject.numberB.length - 1] !== '.') {
 
     stateObject.numberA = logic.operate(operations[stateObject.operator], stateObject.numberA, stateObject.numberB);
+    if (!stateObject.numberA) {
+      logic.resetCalc(stateObject, display.errorDisplay);
+      stateObject.error = true;
+      return;
+    }
     if (stateObject.numberA.toString().length > 10) {
       stateObject.numberA = (Math.floor(stateObject.numberA * 10**4) / 10**4).toString();
       stateObject.approx = true;

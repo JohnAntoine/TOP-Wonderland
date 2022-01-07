@@ -21,7 +21,9 @@ const numberShading = {
   7: '.topH,.topRightV,.bottomRightV',
   8: '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV',
   9: '.topH,.middleH,.bottomH,.topLeftV,.topRightV,.bottomRightV',
-  10: '.middleH'
+  10: '.middleH',
+  e: '.topH,.middleH,.bottomH,.topLeftV,.bottomLeftV',
+  r: '.topH,.middleH,.topLeftV,.bottomLeftV,.topRightV,.bottomRightV',
 }
 
 // Helper Functions
@@ -65,6 +67,13 @@ export function resetDisplay() {
   const display = { ... getDisplays() };
   genDisplayNumbers(display.top, 10, true);
   genDisplayNumbers(display.bottom, 10);
+}
+
+export function errorDisplay() {
+  const display = { ... getDisplays() };
+  genDisplayNumbers(display.top, 10, true);
+  genDisplayNumbers(display.bottom, 10);
+  'err0r'.split('').forEach(letter => addDisplayNumber({number: letter}));
 }
 
 export function displayResult(stateObject) {
