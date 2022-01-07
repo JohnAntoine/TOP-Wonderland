@@ -47,6 +47,16 @@ header {
     color: var(--text-main);
 }
 
+main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--text-main);
+}
+
 footer {
     text-align: center;
     color: var(--text-highlight);
@@ -66,10 +76,14 @@ footer a:hover {
 
 .calc-container {
     width: 30rem;
-    height: 45rem;
+    aspect-ratio: 1 / 1.5;
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.request-rotate {
+    display: none;
 }
 
 .buttons {
@@ -114,6 +128,7 @@ footer a:hover {
 .operator:focus {
     border: 0;
     outline: none;
+    transform: scale(1);
 }
 
 .number {
@@ -197,4 +212,77 @@ footer a:hover {
 .operator-svg-segment.shaded ,
 .equality-svg-segment.shaded {
     fill: var(--main-color-lighter);
+}
+
+@media (min-width: 2000px) {
+
+    body {
+        padding: 64px;
+    }
+
+    header {
+        font-size: 4rem;
+    }
+
+    .calc-container {
+        width: 50rem;
+    }
+
+    .number,
+    .operator {
+        font-size: 4rem;
+    }
+
+    footer {
+        font-size: 3em;
+        max-width: 100rem;
+    }
+
+    footer a ,
+    footer a:link {
+        font-size: 3.4rem;
+    }
+}
+
+
+@media (max-width: 600px) and (orientation:portrait) {
+    header {
+        font-size: 1.5rem;
+    }
+
+    .calc-container {
+        width: 90%;
+    }
+
+    .number,
+    .operator {
+        font-size: 2rem;
+    }
+
+    footer {
+        font-size: 0.6em;
+    }
+
+    footer a ,
+    footer a:link {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-height: 900px) and (orientation:landscape) {
+
+    .calc-container {
+        width: 350px;
+    }
+
+}
+
+@media (max-height: 700px) and (orientation:landscape) {
+    .request-rotate {
+        display: block;
+    }
+
+    .calc-container {
+        display: none;
+    }
 }
