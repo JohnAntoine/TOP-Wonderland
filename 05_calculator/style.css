@@ -100,6 +100,20 @@ footer a:hover {
     font-size: 2rem;
     font-family: 'Roboto', sans-serif;
     font-weight: 700;
+    transition: transform ease-in-out 100ms;
+}
+
+.number:hover,
+.operator:hover {
+    transform: scale(0.95);
+}
+
+.number:active,
+.number:focus ,
+.operator:active ,
+.operator:focus {
+    border: 0;
+    outline: none;
 }
 
 .number {
