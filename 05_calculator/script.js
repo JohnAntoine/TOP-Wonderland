@@ -89,8 +89,7 @@ function btnPressNumber(e) {
     return;
   }
   if (stateObject.afterEquality) {
-    stateObject.numberA = null;
-    stateObject.afterEquality = null;
+    logic.resetCalc(stateObject);
   }
 
   let decimalDot = false;
@@ -169,7 +168,7 @@ function btnPressOperator(e) {
              stateObject.numberB[stateObject.numberB.length - 1] !== '.') {
 
     stateObject.numberA = logic.operate(operations[stateObject.operator], stateObject.numberA, stateObject.numberB);
-    if (!stateObject.numberA) {
+    if (stateObject.numberA === null) {
       logic.resetCalc(stateObject, display.errorDisplay);
       stateObject.error = true;
       return;
@@ -207,7 +206,6 @@ window.addEventListener('keypress', (e) => {
   else if (operators.includes(e.key)) btnPressOperator(e);
   else if (e.key === 'Enter') btnPressOperator(e);
   else if (e.key === 'c') logic.resetCalc(stateObject, display.resetDisplay);
-  else console.log(e.key);
 });
 
 display.resetDisplay();
