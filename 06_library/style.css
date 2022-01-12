@@ -1,5 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Source+Sans+Pro:wght@400;700;900&display=swap');
+
+/*
+ *font-family: 'Alfa Slab One', cursive;
+ *font-family: 'Source Sans Pro', sans-serif;
+*/
+
+:root {
+  --text: #88C0D0;
+  --text-secondary: #D8DEE9;
+  --text-faded: #4C566A;
+  --check-toggled: #B48EAD;
+  --background: #2E3440;
+  --background-card: #3B4252;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: var(--background);
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.card {
+  max-width: 18rem;
+  padding: 16px;
+  background: var(--background-card);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+}
+
+.card-header {
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.card-dsc {
+  text-align: justify;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.card-info {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-author,
+.card-pages {
+  color: var(--text-secondary);
+}
+
+.card-author h3,
+.card-pages h3 {
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+.card-read-container {
+  --side: 1.5rem;
+  --border-radius: calc(var(--side) /2);
+  cursor: pointer;
+}
+
+.card-read-input {
+  display: none;
+}
+
+.card-read-sub .unchecked {
+  display: inline;
+}
+
+.card-read-sub .checked {
+  display: none;
+}
+
+.card-read-input:checked ~ .card-read-sub {
+  background: var(--check-toggled);
+  color: vat(--text-secondary)
+}
+
+.card-read-input:checked ~ .card-read-sub .checked {
+  display: inline;
+}
+
+.card-read-input:checked ~ .card-read-sub .unchecked {
+  display: none;
+}
+
+.card-read-sub {
+  width: var(--side);
+  height: var(--side);
+  border-radius: var(--border-radius);
+  background: transparent;
+  color: var(--text-faded);
+}
+
+.disable-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
