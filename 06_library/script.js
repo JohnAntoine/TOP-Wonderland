@@ -1,4 +1,12 @@
 const myLibrary = [];
+if (!localStorage.getItem('myLibrary')) {
+  localStorage.setItem('myLibrary', myLibrary);
+} else {
+  const library = JSON.parse(localStorage.getItem('myLibrary'));
+  library.forEach(item => addBookToLibrary(item));
+  addLibraryToUI();
+}
+
 
 function Book(title, author, pages, dsc, read) {
   this.title = title;
@@ -13,6 +21,7 @@ Book.prototype.isRead = function(bool) {this.read = bool};
 function addBookToLibrary(title, author, pages, dsc, read) {
   const book = new Book(title, author, pages, dsc, read);
   myLibrary.push(book);
+  localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
 }
 
 function addLibraryToUI(library) {
@@ -44,6 +53,8 @@ const author2 = "J.R.R. Tolkien";
 const pages2 = "365";
 const dsc2 = "The Silmarillion (Quenya: [silmaˈrilliɔn]) is a collection of mythopoeic stories by the English writer J. R. R. Tolkien, edited and published posthumously by his son Christopher Tolkien in 1977 with assistance from the fantasy author Guy Gavriel Kay.[T 1] The Silmarillion tells of Eä, a fictional universe that includes the Blessed Realm of Valinor, the once-great region of Beleriand, the sunken island of Númenor, and the continent of Middle-earth, where Tolkien's most popular works—The Hobbit and The Lord of the Rings—take place.";
 const read2 = true;
+      localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+      localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
 
 
 addBookToLibrary(title1, author1, pages1, dsc1, read1);
