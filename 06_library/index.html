@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Odin's Library</title>
-    <meta name="description" content=
-    "Odin's Library, part of theodinproject.com javascript course">
-    <meta name="viewport" content=
-    "width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="style.css" type="text/css" media=
-    "screen">
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Odin's Library</title>
+<meta name="description" content=
+            "Odin's Library, part of theodinproject.com javascript course">
+<meta name="viewport" content=
+            "width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="style.css" type="text/css" media=
+            "screen">
 </head>
 <body>
-    <header>
-        <h1>Odin's Library</h1>
-    </header>
-    <main>
-    </main>
-    <div class="reference">
-        <div class="card">
-            <div class="card-header">
-                <p></p>
-                <label class="card-read-container disable-select" for="card-read-toggle">
-                    <input class="card-read-input" id="card-read-toggle" type="checkbox" value="">
-                    <div class="card-read-sub">
+<header>
+    <h1>Odin's Library</h1>
+    <button>Add Book</button>
+</header>
+<main>
+</main>
 <div class="moodle">
     <div class="moodle-container">
         <form id="moodle-form">
@@ -60,6 +54,14 @@
         </form>
     </div>
 </div>
+<div class="reference">
+    <div class="card">
+        <div class="card-header">
+            <p></p>
+            <div class="header-buttons">
+                <label class="read-container disable-select" for="card-read-toggle">
+                    <input class="read-input" id="card-read-toggle" type="checkbox" value="">
+                    <div class="read-sub">
                         <span class="material-icons checked">
                             task_alt
                         </span>
@@ -68,20 +70,22 @@
                         </span>
                     </div>
                 </label>
+                <button class="material-icons">delete</button>
             </div>
-            <div class="card-dsc"></div>
-            <div class="card-info">
-                <div class="card-author">
-                    <h3>AUTHOR</h3>
-                    <p></p>
-                </div>
-                <div class="card-pages">
-                    <h3>PAGES</h3>
-                    <p></p>
-                </div>
+        </div>
+        <div class="card-dsc"></div>
+        <div class="card-info">
+            <div class="card-author">
+                <h3>AUTHOR</h3>
+                <p></p>
+            </div>
+            <div class="card-pages">
+                <h3>PAGES</h3>
+                <p></p>
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="script.js"></script>
+</div>
+<script type="text/javascript" src="script.js"></script>
 </body>
 </html>
