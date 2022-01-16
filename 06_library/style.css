@@ -142,3 +142,89 @@ main {
 .reference {
   display: none;
 }
+
+.moodle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.moodle-open {
+  display: flex;
+}
+
+.moodle-container {
+  width: 100%;
+  max-width: 500px;
+  background: var(--background-card);
+  border-radius: var(--border-radius);
+  padding: 32px;
+}
+
+#moodle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-stacked {
+  display: block;
+}
+
+.moodle-section {
+  color: var(--text);
+  font-size: 1.2rem;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.moodle-section textarea ,
+.moodle-section input {
+  color: var(--text-secondary);
+  border: none;
+  border-bottom: 2px solid var(--text-faded);
+  background: none;
+  outline: none;
+}
+
+.moodle-section textarea {
+  font-family: 'Source Sans Pro', sans-serif;
+  resize: none;
+}
+
+.moodle-section input {
+  font-size: 1.1em;
+}
+
+.moodle-section textarea:focus ,
+.moodle-section input:focus {
+  border-bottom: 2px solid var(--text-secondary);
+}
+
+.moodle-read {
+  color: var(--text);
+  font-size: 1.2rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.form-submit {
+  cursor: pointer;
+  outline: none;
+  border: 2px solid var(--text-secondary);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  font-size: 1em;
+  background: none;
+  color: var(--text-secondary);
+}

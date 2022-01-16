@@ -25,6 +25,41 @@
                 <label class="card-read-container disable-select" for="card-read-toggle">
                     <input class="card-read-input" id="card-read-toggle" type="checkbox" value="">
                     <div class="card-read-sub">
+<div class="moodle">
+    <div class="moodle-container">
+        <form id="moodle-form">
+            <div class="moodle-section">
+                <label class="form-stacked" for="moodle-title">Title</label>
+                <input id="moodle-title" autocomplete="off" type="text" name="title"/>
+            </div>
+            <div class="moodle-section">
+                <label class="form-stacked" for="moodle-author">Author</label>
+                <input id="moodle-author" autocomplete="off" type="text" name="author"/>
+            </div>
+            <div class="moodle-section">
+                <label class="form-stacked" for="moodle-pages">Page Count</label>
+                <input id="moodle-pages" autocomplete="off" type="text" name="pages"/>
+            </div>
+            <div class="moodle-section">
+                <label class="form-stacked" for="moodle-description">Description</label>
+                <textarea name="dsc" rows="5" id="moodle-description"></textarea>
+            </div>
+            <label class="read-container moodle-read disable-select" for="moodle-read">
+                Read Status
+                <input class="read-input" id="moodle-read" type="checkbox" value="" name="read">
+                <span class="read-sub">
+                    <span class="material-icons checked">
+                        task_alt
+                    </span>
+                    <span class="material-icons unchecked">
+                        radio_button_unchecked
+                    </span>
+                </span>
+            </label>
+            <input class="form-submit" type="submit" name="submit" value="ADD BOOK"/>
+        </form>
+    </div>
+</div>
                         <span class="material-icons checked">
                             task_alt
                         </span>

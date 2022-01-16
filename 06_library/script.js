@@ -57,14 +57,39 @@ const read2 = true;
       localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
 
 
-addBookToLibrary(title1, author1, pages1, dsc1, read1);
-addBookToLibrary(title2, author2, pages2, dsc2, read2);
-
-addLibraryToUI(myLibrary);
-
-const checkboxes = document.querySelectorAll('.card-read-input');
-checkboxes.forEach(checkbox => {
-  checkbox.addEventListener('change', (e) => {
-    myLibrary[e.target.dataset.idx].isRead(e.target.checked);
-  });
+//// Form Display
+const addBookButton = document.querySelector('header button');
+const moodle = document.querySelector('.moodle');
+const moodleContainer = document.querySelector('.moodle-container');
+addBookButton.addEventListener('click', () => {
+  moodle.classList.add('moodle-open');
 });
+
+moodle.addEventListener('click', () => {
+  moodle.classList.remove('moodle-open');
+});
+
+moodleContainer.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
+
+
+//// Form Control
+const form = document.getElementById('moodle-form');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const formInputs = Array.from(e.target.querySelectorAll('input'));
+  const formTextArea = e.target.querySelector('textarea');
+  const formObject = formInputs.reduce( (prevObj, element) => {
+    if (element.name === "read") prevObj[element.name] = element.checked;
+    else if (element.name !== "submit") prevObj[element.name] = element.value;
+    return prevObj;
+  }, {} );
+  formObject[formTextArea.name] = formTextArea.value;
+  addBookToLibrary(formObject);
+  addLibraryToUI();
+  moodle.classList.remove('moodle-open');
+  form.reset();
+});
+
+
