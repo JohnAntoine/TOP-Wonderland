@@ -21,45 +21,55 @@ function Book(title, author, pages, dsc, read) {
 //// Book object prototype
 Book.prototype.isRead = function(bool) {this.read = bool};
 
-function addBookToLibrary(title, author, pages, dsc, read) {
-  const book = new Book(title, author, pages, dsc, read);
+
 //// Operation Functions
+function addBookToLibrary(bookObject) {
+  const book = new Book(bookObject.title, bookObject.author, bookObject.pages, bookObject.dsc, bookObject.read);
   myLibrary.push(book);
   localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
 }
 
-function addLibraryToUI(library) {
+function addLibraryToUI() {
+  const library = myLibrary;
   const mainContainer = document.querySelector('main');
-  const docFrag = document.createElement('main');
+  const mainFragment = document.createElement('main');
   library.forEach((book, idx) => {
     const bookElement = document.querySelector('.reference .card').cloneNode(true);
     bookElement.querySelector('.card-header p').textContent = book.title;
-    bookElement.querySelector('.card-read-input').checked = book.read;
-    bookElement.querySelector('.card-read-input').id = 'card-read-toggle-' + idx;
-    bookElement.querySelector('.card-read-input').dataset['idx'] = idx;
-    bookElement.querySelector('.card-read-container').htmlFor = 'card-read-toggle-' + idx;
+    bookElement.querySelector('.read-input').checked = book.read;
+    bookElement.querySelector('.read-input').id = 'read-toggle-' + idx;
+    bookElement.querySelector('.read-input').dataset['idx'] = idx;
+    bookElement.querySelector('.header-buttons button').dataset['idx'] = idx;
+    bookElement.querySelector('.read-container').htmlFor = 'read-toggle-' + idx;
     bookElement.querySelector('.card-dsc').textContent = book.dsc;
     bookElement.querySelector('.card-author p').textContent = book.author;
     bookElement.querySelector('.card-pages p').textContent = book.pages;
-    docFrag.appendChild(bookElement);
+    mainFragment.appendChild(bookElement);
   });
-  mainContainer.parentElement.replaceChild(docFrag, mainContainer);
+  mainContainer.parentElement.replaceChild(mainFragment, mainContainer);
+  refreshEventListners();
 }
 
-const title1 = "The Hobbit";
-const author1 = "J.R.R. Tolkien";
-const pages1 = "310";
-const dsc1 = "The Hobbit, or There and Back Again is a children's fantasy novel by English author J. R. R. Tolkien. It was published in 1937 to wide critical acclaim, being nominated for the Carnegie Medal and awarded a prize from the New York Herald Tribune for best juvenile fiction. The book remains popular and is recognized as a classic in children's literature.";
-const read1 = false;
 
-const title2 = "The Silmarillion";
-const author2 = "J.R.R. Tolkien";
-const pages2 = "365";
-const dsc2 = "The Silmarillion (Quenya: [silmaˈrilliɔn]) is a collection of mythopoeic stories by the English writer J. R. R. Tolkien, edited and published posthumously by his son Christopher Tolkien in 1977 with assistance from the fantasy author Guy Gavriel Kay.[T 1] The Silmarillion tells of Eä, a fictional universe that includes the Blessed Realm of Valinor, the once-great region of Beleriand, the sunken island of Númenor, and the continent of Middle-earth, where Tolkien's most popular works—The Hobbit and The Lord of the Rings—take place.";
-const read2 = true;
 //// Book element operations
+function refreshEventListners() {
+  const checkboxes = document.querySelectorAll('.card .read-input');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', (e) => {
+      myLibrary[e.target.dataset.idx].isRead(e.target.checked);
       localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+    });
+  });
+
+  const deleteButtons = document.querySelectorAll('.header-buttons button');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      myLibrary.splice(e.target.dataset.idx, 1);
       localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+      addLibraryToUI();
+    });
+  });
+}
 
 
 //// Form Display
